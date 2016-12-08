@@ -1,0 +1,51 @@
+<html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<script>
+ $(document).ready(function(){
+      var i=1;
+      $('#add').click(function(){
+           i++;
+           $("#listItems").append('{{form.guests}}');
+      });
+      $(document).on('click', '.btn_remove', function(){
+           var button_id = $(this).attr("id");
+           $('#row'+button_id+'').remove();
+      });
+ });
+ </script>
+
+{#
+The macro for the guests = FieldList(FormField(GuestForm), min_entries=2)
+We call this macro like this {{render_field(form..email, 'Sites')}}
+We overgive form.guests as field and 'Sites' field_name.
+#}
+
+{% macro render_field(field, field_name) %}
+
+       <div id="listItems">{{ field_name }}
+       {% for subfield in field %}
+           {{ subfield(**kwargs)|safe }}
+       {% endfor %}
+       <br/>
+       <button type="button" id="add">Add entry</button>
+       </div>
+{% endmacro %}
+
+{{form.name.label}}{{name}}<br />
+<!-- Here we render the List from guests form -->
+{{render_field(form.guests, 'Guests')}}
+</body>
+</html>
